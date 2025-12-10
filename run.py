@@ -315,9 +315,9 @@ class TransferBot:
 def print_banner():
     banner = f"""
 {Fore.CYAN}{'='*60}
-{Fore.YELLOW}   ========================
-{Fore.YELLOW}   DIAM-AUTO-SEND | bactiar291
-{Fore.YELLOW}   ========================
+{Fore.YELLOW}          ********************************
+{Fore.YELLOW}             DIAM-AUTO-SEND | bactiar291
+{Fore.YELLOW}          ********************************
 {Fore.CYAN}{'='*60}
 {Fore.WHITE}   Auto Transfer Bot diamm | Multi-Account | Proxy Support
 {Fore.CYAN}{'='*60}
