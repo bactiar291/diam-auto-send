@@ -8,7 +8,6 @@ from datetime import datetime
 from fake_useragent import UserAgent
 from colorama import init, Fore, Style
 
-# Inisialisasi colorama
 init(autoreset=True)
 
 class ProxyManager:
@@ -75,7 +74,6 @@ class TransferBot:
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         self.log_file = f"logs/transfer_{timestamp}.txt"
         
-        # Create logs directory if not exists
         if not os.path.exists('logs'):
             os.makedirs('logs')
     
@@ -84,10 +82,8 @@ class TransferBot:
         prefix = f"[{account_nick}] " if account_nick else ""
         log_line = f"[{timestamp}] {prefix}{message}"
         
-        # Console output with color
         print(f"{color}{log_line}")
         
-        # File log (without color codes)
         with open(self.log_file, 'a', encoding='utf-8') as f:
             f.write(log_line.replace('\033[', '[') + '\n')
     
@@ -109,7 +105,6 @@ class TransferBot:
             return []
     
     def create_headers(self, account):
-        # Random user agent
         user_agent = self.ua.random
         
         return {
@@ -158,7 +153,6 @@ class TransferBot:
                 payload = self.create_payload(to_address, amount, account)
                 headers = self.create_headers(account)
                 
-                # Prepare proxy
                 proxy = self.proxy_manager.get_proxy()
                 proxies = None
                 if proxy:
@@ -234,7 +228,6 @@ class TransferBot:
         self.log("=" * 60, color=Fore.CYAN)
         
         if mode == 'round_robin':
-            # Setiap akun transfer ke semua alamat
             total_transfers = len(accounts) * len(addresses)
             current = 0
             
@@ -258,14 +251,12 @@ class TransferBot:
                         self.stats['failed'] += 1
                         self.log(f"Failed", account_nick, Fore.RED)
                     
-                    # Delay kecuali transfer terakhir
                     if not (account_idx == len(accounts)-1 and addr_idx == len(addresses)-1):
                         delay = random.randint(min_delay, max_delay)
                         self.log(f"Wait {delay}s", account_nick, Fore.MAGENTA)
                         time.sleep(delay)
         
         elif mode == 'sequential':
-            # Setiap alamat ditransfer oleh akun bergantian
             for idx, address in enumerate(addresses):
                 self.stats['total_transfers'] += 1
                 account = accounts[idx % len(accounts)]
@@ -290,7 +281,6 @@ class TransferBot:
                     time.sleep(delay)
         
         elif mode == 'random':
-            # Akun dipilih random untuk setiap alamat
             for idx, address in enumerate(addresses):
                 self.stats['total_transfers'] += 1
                 account = self.account_manager.get_account()
@@ -314,7 +304,6 @@ class TransferBot:
                     self.log(f"Wait {delay}s", account_nick, Fore.MAGENTA)
                     time.sleep(delay)
         
-        # Show summary
         self.log("=" * 60, color=Fore.CYAN)
         self.log("📊 TRANSFER SUMMARY", color=Fore.CYAN)
         self.log(f"Total transfers: {self.stats['total_transfers']}", color=Fore.CYAN)
@@ -340,11 +329,9 @@ def main():
     
     bot = TransferBot()
     
-    # Configuration
     print(f"\n{Fore.CYAN}⚙️  CONFIGURATION")
     print(f"{Fore.CYAN}{'-'*30}")
     
-    # Amount
     while True:
         try:
             amount_input = input(f"{Fore.WHITE}Amount ETH (default 0.001): ").strip()
@@ -356,7 +343,6 @@ def main():
         except:
             print(f"{Fore.RED}Invalid amount")
     
-    # Delay
     while True:
         try:
             min_delay_input = input(f"{Fore.WHITE}Min delay (seconds, default 5): ").strip()
@@ -372,7 +358,6 @@ def main():
         except:
             print(f"{Fore.RED}Invalid input")
     
-    # Mode
     print(f"\n{Fore.CYAN}🎯 TRANSFER MODE")
     print(f"{Fore.CYAN}{'-'*30}")
     print(f"{Fore.WHITE}1. Round Robin - Each account transfers to all addresses")
@@ -396,7 +381,6 @@ def main():
         else:
             print(f"{Fore.RED}Invalid choice")
     
-    # Max retries
     while True:
         try:
             retry_input = input(f"{Fore.WHITE}Max retries per transfer (default 10): ").strip()
@@ -408,7 +392,6 @@ def main():
         except:
             print(f"{Fore.RED}Invalid input")
     
-    # Confirmation
     print(f"\n{Fore.YELLOW}⚠️  CONFIRMATION")
     print(f"{Fore.YELLOW}{'-'*30}")
     print(f"{Fore.WHITE}Mode: {mode}")
@@ -423,7 +406,6 @@ def main():
         print(f"{Fore.YELLOW}Transfer cancelled")
         return
     
-    # Start transfer
     print(f"\n{Fore.GREEN}🚀 Starting transfer...")
     print(f"{Fore.GREEN}📁 Log file: {bot.log_file}")
     
