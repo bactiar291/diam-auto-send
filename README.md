@@ -1,0 +1,2 @@
+# diam-auto-send
+ready
