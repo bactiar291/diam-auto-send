@@ -1,0 +1,3 @@
+cookie=
+user_id=
+amount=0.001 
